@@ -3,26 +3,26 @@ export default interface User {
   login: string;
   password: string;
   age: number;
-  isDeleted: boolean;
+  isDeleted?: boolean;
 }
 
-interface UserRes {
+interface UserResponse {
   id: string;
   login: string;
   age: number;
 }
 
-export function getResUser(user: User): UserRes {
-  const userRes: UserRes = {
+export function getUsersResponse(users: User[]): UserResponse[] {
+  return users.map(user => getUserResponse(user));
+}
+
+export function getUserResponse(user: User): UserResponse {
+  const UserResponse: UserResponse = {
     id: user.id,
     login: user.login,
     age: user.age,
   };
-  return userRes;
-}
-
-export function getResUsers(users: User[]): UserRes[] {
-  return users.map(user => getResUser(user));
+  return UserResponse;
 }
 
 export function getAutoSuggestUsers(
@@ -30,16 +30,12 @@ export function getAutoSuggestUsers(
   loginSubstring: string,
   limit?: number
 ): User[] {
-  const sortedByLogin = users.sort((a, b) =>
-    a.login.toLowerCase() < b.login.toLowerCase()
-      ? -1
-      : b.login.toLowerCase() > a.login.toLowerCase()
-      ? 1
-      : 0
-  );
-
-  const suggestedUsers = sortedByLogin.filter(
-    user => user.login.includes(loginSubstring) && !user.isDeleted
-  );
+  const suggestedUsers = users
+    .sort((a, b) => a.login.toLowerCase().localeCompare(b.login.toLowerCase()))
+    .filter(user => user.login.includes(loginSubstring) && !user.isDeleted);
   return limit ? suggestedUsers.slice(0, limit) : suggestedUsers;
+}
+
+export function findUserById(users: User[], id: string): number {
+  return users.findIndex(user => user.id === id && !user.isDeleted);
 }
