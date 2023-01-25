@@ -31,18 +31,6 @@ export const createUserBodySchema = Joi.object({
   age: Joi.number().integer().greater(4).less(130).required(),
 });
 
-export const editUserBodySchema = Joi.object({
-  id: Joi.string().required(),
-  password: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9]{8,30}$'))
-    .required()
-    .messages({
-      'string.pattern.base': VALIDATION_MESSAGES.PASSWORD,
-    }),
-  login: Joi.string().required(),
-  age: Joi.number().integer().greater(4).less(130).required(),
-});
-
 export const suggestUsersQuerySchema = Joi.object({
   loginSubstring: Joi.string(),
   limit: Joi.number().integer().greater(0),

@@ -65,14 +65,14 @@ app.post(
 );
 
 app.put(
-  '/users',
-  validator.body(userValidation.editUserBodySchema),
+  '/users/:id',
+  validator.body(userValidation.createUserBodySchema),
   (
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
     res: Response
   ) => {
-    const {age, id, login, password} = req.body;
-    const userIndex = userActions.findUserById(users, id as string);
+    const {age, login, password} = req.body;
+    const userIndex = userActions.findUserById(users, req.params.id);
     if (userIndex >= 0) {
       users[userIndex].login = login;
       users[userIndex].password = password;
