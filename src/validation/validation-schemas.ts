@@ -1,7 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-import
 import Joi from 'joi';
 import {ContainerTypes, ValidatedRequestSchema} from 'express-joi-validation';
-import {VALIDATION_MESSAGES} from './messages';
+import {VALIDATION_MESSAGES} from '../messages';
 
 export interface UserRequestBodySchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
