@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import {v4} from 'uuid';
 
 const SALT_ROUNDS = 10;
-const returnAttributes = ['id', 'login', 'age'];
+const RETURN_ATTRIBUTES = ['id', 'login', 'age'];
 
 export default class UserService {
   static async getSuggestedUsers(
@@ -22,7 +22,7 @@ export default class UserService {
 
   static async getUser(id: string) {
     return await Users.findByPk(id, {
-      attributes: returnAttributes,
+      attributes: RETURN_ATTRIBUTES,
     });
   }
 
@@ -35,7 +35,7 @@ export default class UserService {
         age,
       },
       {
-        returning: returnAttributes,
+        returning: RETURN_ATTRIBUTES,
       }
     );
   }
@@ -50,7 +50,7 @@ export default class UserService {
       {login, password: bcrypt.hashSync(password, SALT_ROUNDS), age},
       {
         where: {id: id},
-        returning: returnAttributes,
+        returning: RETURN_ATTRIBUTES,
       }
     );
   }

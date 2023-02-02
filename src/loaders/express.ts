@@ -5,12 +5,12 @@ import usersRouter from '../routers/users-routes';
 export default ({app}: {app: express.Application}) => {
   app.use(express.json());
 
+  app.use('/users', usersRouter);
+
   app.use((err: unknown, res: Response, next: NextFunction) => {
     if (!err) {
       return next();
     }
     res.status(500).send(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR);
   });
-
-  app.use('/users', usersRouter);
 };

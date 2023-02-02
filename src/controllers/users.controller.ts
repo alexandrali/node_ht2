@@ -41,21 +41,31 @@ export class UsersController {
     res: Response
   ) {
     const {age, login, password} = req.body;
-    const updatedUser = await UserService.updateUser(
-      req.params.id,
-      age,
-      login,
-      password
-    );
-    if (updatedUser) {
-      res.send(updatedUser);
-    } else {
+    const existedUser = await UserService.getUser(req.params.id);
+    if (!existedUser) {
       res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    } else {
+      const [, [updatedUser]] = await UserService.updateUser(
+        req.params.id,
+        age,
+        login,
+        password
+      );
+      if (updatedUser) {
+        res.send(updatedUser);
+      } else {
+        res.status(500).send(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR);
+      }
     }
   }
 
   static async deleteUser(req: Request, res: Response) {
-    await UserService.deleteUser(req.params.id);
-    res.status(204).send();
+    const existedUser = await UserService.getUser(req.params.id);
+    if (!existedUser) {
+      res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    } else {
+      await UserService.deleteUser(req.params.id);
+      res.status(204).send();
+    }
   }
 }

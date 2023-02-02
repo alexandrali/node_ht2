@@ -7,3 +7,8 @@ export const VALIDATION_MESSAGES = {
   PASSWORD:
     '"password" must contain at least 8 characters with at least 1 letters and at least 1 number',
 };
+
+export const DATABASE_MESSAGES = {
+  CONNECTED: 'Connection has been established successfully',
+  FAILED: 'Unable to connect to the database',
+};
