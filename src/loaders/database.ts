@@ -7,6 +7,8 @@ export const sequelize = new Sequelize(config.dbUrl);
 
 export const Users = sequelize.define('users', UserModel, {paranoid: true});
 
+Users.sync();
+
 export default async () => {
   try {
     await sequelize.authenticate();

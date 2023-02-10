@@ -2,6 +2,7 @@ import {Users} from '../loaders/database';
 import {Op} from 'sequelize';
 import bcrypt from 'bcrypt';
 import {v4} from 'uuid';
+import {RESPONSE_MESSAGES} from '../config/messages';
 
 const SALT_ROUNDS = 10;
 const RETURN_ATTRIBUTES = ['id', 'login', 'age'];
@@ -17,13 +18,18 @@ export default class UserService {
       },
       order: [['login', 'ASC']],
       limit: limit,
+      attributes: RETURN_ATTRIBUTES,
     });
   }
 
   static async getUser(id: string) {
-    return await Users.findByPk(id, {
+    const user = await Users.findByPk(id, {
       attributes: RETURN_ATTRIBUTES,
     });
+    if (!user) {
+      throw new Error(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    }
+    return user;
   }
 
   static async createUser(age: number, login: string, password: string) {
@@ -46,13 +52,17 @@ export default class UserService {
     login: string,
     password: string
   ) {
-    return await Users.update(
+    const [, [updatedUser]] = await Users.update(
       {login, password: bcrypt.hashSync(password, SALT_ROUNDS), age},
       {
         where: {id: id},
         returning: RETURN_ATTRIBUTES,
       }
     );
+    if (!updatedUser) {
+      throw new Error(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    }
+    return updatedUser;
   }
 
   static async deleteUser(id: string) {

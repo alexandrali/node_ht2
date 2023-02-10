@@ -2,70 +2,75 @@ import {ValidatedRequest} from 'express-joi-validation';
 import * as userValidation from '../validation/validation-schemas';
 import UserService from '../services/user.service';
 import {Request, Response} from 'express';
-import {RESPONSE_MESSAGES} from '../config/messages';
+import {NextFunction} from 'connect';
 
 export class UsersController {
   static async getSuggestedUsers(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
-    res: Response
+    res: Response,
+    next: NextFunction
   ) {
-    const loginSubstring = req.query.loginSubstring || '';
-    const limit = req.query.limit ? +req.query.limit : undefined;
-    const suggestedUsers = await UserService.getSuggestedUsers(
-      loginSubstring,
-      limit
-    );
-    res.send(suggestedUsers);
+    try {
+      const loginSubstring = req.query.loginSubstring || '';
+      const limit = req.query.limit ? +req.query.limit : undefined;
+      const suggestedUsers = await UserService.getSuggestedUsers(
+        loginSubstring,
+        limit
+      );
+      res.send(suggestedUsers);
+    } catch (error) {
+      next(error);
+    }
   }
 
-  static async getUser(req: Request, res: Response) {
-    const user = await UserService.getUser(req.params.id);
-    if (user) {
+  static async getUser(req: Request, res: Response, next: NextFunction) {
+    try {
+      const user = await UserService.getUser(req.params.id);
       res.send(user);
-    } else {
-      res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    } catch (error) {
+      next(error);
     }
   }
 
   static async createUser(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
-    res: Response
+    res: Response,
+    next: NextFunction
   ) {
-    const {age, login, password} = req.body;
-    const newUser = await UserService.createUser(age, login, password);
-    res.send(newUser);
+    try {
+      const {age, login, password} = req.body;
+      const newUser = await UserService.createUser(age, login, password);
+      res.send(newUser);
+    } catch (error) {
+      next(error);
+    }
   }
 
   static async editUser(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
-    res: Response
+    res: Response,
+    next: NextFunction
   ) {
-    const {age, login, password} = req.body;
-    const existedUser = await UserService.getUser(req.params.id);
-    if (!existedUser) {
-      res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
-    } else {
-      const [, [updatedUser]] = await UserService.updateUser(
+    try {
+      const {age, login, password} = req.body;
+      const updatedUser = await UserService.updateUser(
         req.params.id,
         age,
         login,
         password
       );
-      if (updatedUser) {
-        res.send(updatedUser);
-      } else {
-        res.status(500).send(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR);
-      }
+      res.send(updatedUser);
+    } catch (error) {
+      next(error);
     }
   }
 
-  static async deleteUser(req: Request, res: Response) {
-    const existedUser = await UserService.getUser(req.params.id);
-    if (!existedUser) {
-      res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
-    } else {
+  static async deleteUser(req: Request, res: Response, next: NextFunction) {
+    try {
       await UserService.deleteUser(req.params.id);
       res.status(204).send();
+    } catch (error) {
+      next(error);
     }
   }
 }
