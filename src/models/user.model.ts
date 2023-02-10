@@ -2,7 +2,7 @@ import {DataTypes} from 'sequelize';
 
 export const UserModel = {
   id: {
-    type: DataTypes.STRING,
+    type: DataTypes.UUID,
     primaryKey: true,
     allowNull: false,
     unique: true,

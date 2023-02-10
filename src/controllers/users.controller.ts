@@ -4,8 +4,8 @@ import UserService from '../services/user.service';
 import {Request, Response} from 'express';
 import {NextFunction} from 'connect';
 
-export class UsersController {
-  static async getSuggestedUsers(
+export default {
+  async getSuggestedUsers(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
     res: Response,
     next: NextFunction
@@ -21,18 +21,18 @@ export class UsersController {
     } catch (error) {
       next(error);
     }
-  }
+  },
 
-  static async getUser(req: Request, res: Response, next: NextFunction) {
+  async getUser(req: Request, res: Response, next: NextFunction) {
     try {
       const user = await UserService.getUser(req.params.id);
       res.send(user);
     } catch (error) {
       next(error);
     }
-  }
+  },
 
-  static async createUser(
+  async createUser(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
     res: Response,
     next: NextFunction
@@ -44,9 +44,9 @@ export class UsersController {
     } catch (error) {
       next(error);
     }
-  }
+  },
 
-  static async editUser(
+  async editUser(
     req: ValidatedRequest<userValidation.UserRequestBodySchema>,
     res: Response,
     next: NextFunction
@@ -63,14 +63,14 @@ export class UsersController {
     } catch (error) {
       next(error);
     }
-  }
+  },
 
-  static async deleteUser(req: Request, res: Response, next: NextFunction) {
+  async deleteUser(req: Request, res: Response, next: NextFunction) {
     try {
       await UserService.deleteUser(req.params.id);
       res.status(204).send();
     } catch (error) {
       next(error);
     }
-  }
-}
+  },
+};

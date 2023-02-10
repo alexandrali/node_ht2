@@ -7,11 +7,8 @@ import {RESPONSE_MESSAGES} from '../config/messages';
 const SALT_ROUNDS = 10;
 const RETURN_ATTRIBUTES = ['id', 'login', 'age'];
 
-export default class UserService {
-  static async getSuggestedUsers(
-    loginSubstring: string,
-    limit: number | undefined
-  ) {
+export default {
+  async getSuggestedUsers(loginSubstring: string, limit: number | undefined) {
     return await Users.findAll({
       where: {
         login: {[Op.substring]: loginSubstring},
@@ -20,9 +17,9 @@ export default class UserService {
       limit: limit,
       attributes: RETURN_ATTRIBUTES,
     });
-  }
+  },
 
-  static async getUser(id: string) {
+  async getUser(id: string) {
     const user = await Users.findByPk(id, {
       attributes: RETURN_ATTRIBUTES,
     });
@@ -30,12 +27,13 @@ export default class UserService {
       throw new Error(RESPONSE_MESSAGES.USER_NOT_FOUND);
     }
     return user;
-  }
+  },
 
-  static async createUser(age: number, login: string, password: string) {
-    return await Users.create(
+  async createUser(age: number, login: string, password: string) {
+    const id = v4();
+    const newUser = await Users.create(
       {
-        id: v4(),
+        id: id,
         login,
         password: bcrypt.hashSync(password, SALT_ROUNDS),
         age,
@@ -44,14 +42,14 @@ export default class UserService {
         returning: RETURN_ATTRIBUTES,
       }
     );
-  }
+    if (newUser) {
+      return {id, login, age};
+    } else {
+      throw new Error();
+    }
+  },
 
-  static async updateUser(
-    id: string,
-    age: number,
-    login: string,
-    password: string
-  ) {
+  async updateUser(id: string, age: number, login: string, password: string) {
     const [, [updatedUser]] = await Users.update(
       {login, password: bcrypt.hashSync(password, SALT_ROUNDS), age},
       {
@@ -63,13 +61,13 @@ export default class UserService {
       throw new Error(RESPONSE_MESSAGES.USER_NOT_FOUND);
     }
     return updatedUser;
-  }
+  },
 
-  static async deleteUser(id: string) {
+  async deleteUser(id: string) {
     return await Users.destroy({
       where: {
         id: id,
       },
     });
-  }
-}
+  },
+};
