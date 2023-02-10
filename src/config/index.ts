@@ -1,5 +1,15 @@
+import dotenv from 'dotenv';
+
+const envFound = dotenv.config();
+
+if (envFound.error) {
+  throw new Error("Couldn't find .env file");
+}
+
+const port = process.env.PORT;
+const dbUrl = process.env.DB_URL || '';
+
 export default {
-  port: 3000,
-  dbUrl:
-    'postgres://hexaunhz:QPLbFw6DkBV9-5nSv98k7dFeUeWYC48R@snuffleupagus.db.elephantsql.com/hexaunhz',
+  port,
+  dbUrl,
 };
