@@ -6,14 +6,19 @@ export default ({app}: {app: express.Application}) => {
   app.use(express.json());
   app.use('/users', usersRouter);
 
+  app.use((req: Request, res: Response, next: NextFunction) => {
+    if (!req.route) {
+      res.status(400).send(RESPONSE_MESSAGES.INVALID_URL);
+    } else {
+      next();
+    }
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   app.use((err: any, req: Request, res: Response, next: NextFunction) => {
     if (!err) {
       return next();
     }
-    console.log('--------');
-    console.log(RESPONSE_MESSAGES.USER_NOT_FOUND);
-    console.log('---------');
     if (err.message === RESPONSE_MESSAGES.USER_NOT_FOUND) {
       res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
     }
