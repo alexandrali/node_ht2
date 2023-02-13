@@ -31,7 +31,7 @@ export default {
 
   async createUser(age: number, login: string, password: string) {
     const id = v4();
-    const newUser = await Users.create(
+    await Users.create(
       {
         id: id,
         login,
@@ -42,11 +42,7 @@ export default {
         returning: RETURN_ATTRIBUTES,
       }
     );
-    if (newUser) {
-      return {id, login, age};
-    } else {
-      throw new Error();
-    }
+    return {id, login, age};
   },
 
   async updateUser(id: string, age: number, login: string, password: string) {
