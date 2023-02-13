@@ -1,7 +1,7 @@
 // eslint-disable-next-line node/no-unpublished-import
 import Joi from 'joi';
 import {ContainerTypes, ValidatedRequestSchema} from 'express-joi-validation';
-import {VALIDATION_MESSAGES} from './messages';
+import {VALIDATION_MESSAGES} from '../config/messages';
 
 export interface UserRequestBodySchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: {
@@ -21,18 +21,6 @@ export interface UserRequestQuerySchema extends ValidatedRequestSchema {
 }
 
 export const createUserBodySchema = Joi.object({
-  password: Joi.string()
-    .pattern(new RegExp('^[a-zA-Z0-9]{8,30}$'))
-    .required()
-    .messages({
-      'string.pattern.base': VALIDATION_MESSAGES.PASSWORD,
-    }),
-  login: Joi.string().required(),
-  age: Joi.number().integer().greater(4).less(130).required(),
-});
-
-export const editUserBodySchema = Joi.object({
-  id: Joi.string().required(),
   password: Joi.string()
     .pattern(new RegExp('^[a-zA-Z0-9]{8,30}$'))
     .required()
