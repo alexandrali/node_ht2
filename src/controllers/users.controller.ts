@@ -1,5 +1,5 @@
 import {ValidatedRequest} from 'express-joi-validation';
-import * as userValidation from '../validation/validation-schemas';
+import * as userValidation from '../validation/user-validation-schemas';
 import UserService from '../services/user.service';
 import {Request, Response} from 'express';
 import {NextFunction} from 'connect';

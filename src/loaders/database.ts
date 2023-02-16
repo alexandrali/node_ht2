@@ -9,8 +9,10 @@ export const sequelize = new Sequelize(config.dbUrl);
 export const Users = sequelize.define('users', UserModel, {paranoid: true});
 export const Groups = sequelize.define('groups', GroupModel);
 
-Users.sync();
-Groups.sync();
+Users.belongsToMany(Groups, {through: 'users_groups'});
+Groups.belongsToMany(Users, {through: 'users_groups'});
+
+sequelize.sync();
 
 export default async () => {
   try {

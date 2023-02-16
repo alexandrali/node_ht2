@@ -62,4 +62,20 @@ export default {
       next(error);
     }
   },
+
+  async addUserToGroup(
+    req: ValidatedRequest<groupValidation.GroupUsersRequestBodySchema>,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const group = await GroupService.addUsersToGroup(
+        req.params.id,
+        req.body.ids
+      );
+      res.send(group);
+    } catch (error) {
+      next(error);
+    }
+  },
 };

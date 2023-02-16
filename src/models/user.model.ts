@@ -19,8 +19,4 @@ export const UserModel = {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  isDeleted: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
 };

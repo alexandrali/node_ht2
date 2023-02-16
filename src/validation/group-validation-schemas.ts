@@ -20,3 +20,13 @@ export const groupBodySchema = Joi.object({
     )
     .required(),
 });
+
+export interface GroupUsersRequestBodySchema extends ValidatedRequestSchema {
+  [ContainerTypes.Body]: {
+    ids: string[];
+  };
+}
+
+export const groupUsersBodySchema = Joi.object({
+  ids: Joi.array().items(Joi.string()).required(),
+});
