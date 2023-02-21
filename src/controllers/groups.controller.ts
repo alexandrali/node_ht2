@@ -29,7 +29,7 @@ export default {
   ) {
     try {
       const {name, permissions} = req.body;
-      const newGroup = await GroupService.createUser(name, permissions);
+      const newGroup = await GroupService.createGroup(name, permissions);
       res.send(newGroup);
     } catch (error) {
       next(error);
@@ -43,7 +43,7 @@ export default {
   ) {
     try {
       const {name, permissions} = req.body;
-      const updatedGroup = await GroupService.updateUser(
+      const updatedGroup = await GroupService.updateGroup(
         req.params.id,
         name,
         permissions
@@ -71,7 +71,7 @@ export default {
     try {
       const group = await GroupService.addUsersToGroup(
         req.params.id,
-        req.body.ids
+        req.body.userIds
       );
       res.send(group);
     } catch (error) {

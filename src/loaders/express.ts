@@ -21,14 +21,15 @@ export default ({app}: {app: express.Application}) => {
     if (!err) {
       return next();
     }
-    if (err.message === RESPONSE_MESSAGES.USER_NOT_FOUND) {
-      res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
+    switch (err.message) {
+      case RESPONSE_MESSAGES.USER_NOT_FOUND:
+        res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
+        break;
+      case RESPONSE_MESSAGES.GROUP_NOT_FOUND:
+        res.status(404).send(RESPONSE_MESSAGES.GROUP_NOT_FOUND);
+        break;
+      default:
+        res.status(500).send(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR);
     }
-
-    if (err.message === RESPONSE_MESSAGES.GROUP_NOT_FOUND) {
-      res.status(404).send(RESPONSE_MESSAGES.GROUP_NOT_FOUND);
-    }
-
-    res.status(500).send(RESPONSE_MESSAGES.INTERNAL_SERVER_ERROR);
   });
 };

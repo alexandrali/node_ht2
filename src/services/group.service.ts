@@ -5,6 +5,9 @@ import {
   GROUPS_RETURN_ATTRIBUTES,
   USERS_RETURN_ATTRIBUTES,
 } from '../config/return-params';
+import {Permissions} from '../config/enums';
+
+type Permission = Record<Permissions, string>[];
 
 const INCLUDE_USERS = {
   model: Users,
@@ -33,7 +36,7 @@ export default {
     return group;
   },
 
-  async createUser(name: string, permissions: string[]) {
+  async createGroup(name: string, permissions: Permission) {
     const id = v4();
     await Groups.create(
       {
@@ -48,7 +51,7 @@ export default {
     return {id, name, permissions};
   },
 
-  async updateUser(id: string, name: string, permissions: string[]) {
+  async updateGroup(id: string, name: string, permissions: Permission) {
     const [, [updatedGroup]] = await Groups.update(
       {name, permissions},
       {
@@ -93,6 +96,11 @@ export default {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       await group.addUsers(users, {
+        transaction: t,
+      });
+
+      await group.reload({
+        attributes: GROUPS_RETURN_ATTRIBUTES,
         transaction: t,
       });
 

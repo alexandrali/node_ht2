@@ -25,7 +25,7 @@ router.put(
 router.delete('/:id', GroupsController.deleteGroup);
 
 router.put(
-  '/addusers/:id',
+  '/:id/add-users',
   validator.body(groupValidation.groupUsersBodySchema),
   GroupsController.addUserToGroup
 );

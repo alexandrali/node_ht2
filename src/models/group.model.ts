@@ -1,4 +1,5 @@
 import {DataTypes} from 'sequelize';
+import {Permissions} from '../config/enums';
 
 export const GroupModel = {
   id: {
@@ -12,8 +13,6 @@ export const GroupModel = {
     allowNull: false,
   },
   permissions: {
-    type: DataTypes.ARRAY(
-      DataTypes.ENUM('READ', 'WRITE', 'DELETE', 'SHARE', 'UPLOAD_FILES')
-    ),
+    type: DataTypes.ARRAY(DataTypes.ENUM(...Object.values(Permissions))),
   },
 };
