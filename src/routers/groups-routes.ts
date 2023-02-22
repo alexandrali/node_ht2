@@ -24,10 +24,10 @@ router.put(
 
 router.delete('/:id', GroupsController.deleteGroup);
 
-router.put(
+router.post(
   '/:id/add-users',
   validator.body(groupValidation.groupUsersBodySchema),
-  GroupsController.addUserToGroup
+  GroupsController.addUsersToGroup
 );
 
 export default router;

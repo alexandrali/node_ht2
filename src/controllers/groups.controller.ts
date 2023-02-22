@@ -63,7 +63,7 @@ export default {
     }
   },
 
-  async addUserToGroup(
+  async addUsersToGroup(
     req: ValidatedRequest<groupValidation.GroupUsersRequestBodySchema>,
     res: Response,
     next: NextFunction

@@ -5,9 +5,7 @@ import {
   GROUPS_RETURN_ATTRIBUTES,
   USERS_RETURN_ATTRIBUTES,
 } from '../config/return-params';
-import {Permissions} from '../config/enums';
-
-type Permission = Record<Permissions, string>[];
+import {Permission} from '../config/enums';
 
 const INCLUDE_USERS = {
   model: Users,
@@ -36,7 +34,7 @@ export default {
     return group;
   },
 
-  async createGroup(name: string, permissions: Permission) {
+  async createGroup(name: string, permissions: Permission[]) {
     const id = v4();
     await Groups.create(
       {
@@ -51,7 +49,7 @@ export default {
     return {id, name, permissions};
   },
 
-  async updateGroup(id: string, name: string, permissions: Permission) {
+  async updateGroup(id: string, name: string, permissions: Permission[]) {
     const [, [updatedGroup]] = await Groups.update(
       {name, permissions},
       {
