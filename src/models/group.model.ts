@@ -1,22 +1,18 @@
 import {DataTypes} from 'sequelize';
+import {Permission} from '../config/enums';
 
-export const UserModel = {
+export const GroupModel = {
   id: {
     type: DataTypes.UUID,
     primaryKey: true,
     allowNull: false,
     unique: true,
   },
-  login: {
+  name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  password: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  age: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
+  permissions: {
+    type: DataTypes.ARRAY(DataTypes.ENUM(...Object.values(Permission))),
   },
 };

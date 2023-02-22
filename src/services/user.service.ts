@@ -3,9 +3,9 @@ import {Op} from 'sequelize';
 import bcrypt from 'bcrypt';
 import {v4} from 'uuid';
 import {RESPONSE_MESSAGES} from '../config/messages';
+import {USERS_RETURN_ATTRIBUTES} from '../config/return-params';
 
 const SALT_ROUNDS = 10;
-const RETURN_ATTRIBUTES = ['id', 'login', 'age'];
 
 export default {
   async getSuggestedUsers(loginSubstring: string, limit: number | undefined) {
@@ -15,13 +15,13 @@ export default {
       },
       order: [['login', 'ASC']],
       limit: limit,
-      attributes: RETURN_ATTRIBUTES,
+      attributes: USERS_RETURN_ATTRIBUTES,
     });
   },
 
   async getUser(id: string) {
     const user = await Users.findByPk(id, {
-      attributes: RETURN_ATTRIBUTES,
+      attributes: USERS_RETURN_ATTRIBUTES,
     });
     if (!user) {
       throw new Error(RESPONSE_MESSAGES.USER_NOT_FOUND);
@@ -39,7 +39,7 @@ export default {
         age,
       },
       {
-        returning: RETURN_ATTRIBUTES,
+        returning: USERS_RETURN_ATTRIBUTES,
       }
     );
     return {id, login, age};
@@ -50,7 +50,7 @@ export default {
       {login, password: bcrypt.hashSync(password, SALT_ROUNDS), age},
       {
         where: {id: id},
-        returning: RETURN_ATTRIBUTES,
+        returning: USERS_RETURN_ATTRIBUTES,
       }
     );
     if (!updatedUser) {

@@ -1,13 +1,18 @@
 import {Sequelize} from 'sequelize';
 import {UserModel} from '../models/user.model';
+import {GroupModel} from '../models/group.model';
 import config from '../config';
 import {DATABASE_MESSAGES} from '../config/messages';
 
 export const sequelize = new Sequelize(config.dbUrl);
 
 export const Users = sequelize.define('users', UserModel, {paranoid: true});
+export const Groups = sequelize.define('groups', GroupModel);
 
-Users.sync();
+Users.belongsToMany(Groups, {through: 'users_groups'});
+Groups.belongsToMany(Users, {through: 'users_groups'});
+
+sequelize.sync();
 
 export default async () => {
   try {

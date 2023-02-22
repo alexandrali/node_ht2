@@ -1,6 +1,7 @@
 export const RESPONSE_MESSAGES = {
   INTERNAL_SERVER_ERROR: 'Internal server error',
   USER_NOT_FOUND: 'No such user',
+  GROUP_NOT_FOUND: 'No such group',
   INVALID_URL: 'Invalid url',
 };
 

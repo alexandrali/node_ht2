@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import * as userValidation from '../validation/validation-schemas';
+import * as userValidation from '../validation/user-validation-schemas';
 import {createValidator} from 'express-joi-validation';
 import UsersController from '../controllers/users.controller';
 
