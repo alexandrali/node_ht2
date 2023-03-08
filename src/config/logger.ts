@@ -1,21 +1,10 @@
 import winston from 'winston';
 
-const logger = winston.createLogger({
+export default winston.createLogger({
   level: 'info',
   format: winston.format.combine(
-    winston.format.colorize(),
-    winston.format.simple()
+    winston.format.timestamp({format: 'YYYY-MM-DD HH:mm:ss:ms'}),
+    winston.format.json()
   ),
   transports: [new winston.transports.Console({})],
 });
-
-export default {
-  requestSent(message: string) {
-    logger.info(message);
-  },
-  requestError(message: string) {
-    logger.error({
-      message,
-    });
-  },
-};

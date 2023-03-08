@@ -1,13 +1,14 @@
 import express from 'express';
 import config from './config';
 import loaders from './loaders';
+import logger from './config/logger';
 
 process.on('uncaughtException', err => {
-  throw new Error(err.message);
+  logger.error(err.message);
 });
 
 process.on('unhandledRejection', (reason, promise) => {
-  throw new Error(`Unhandled Rejection at: ${promise}. Reason: ${reason}`);
+  logger.error(`Unhandled Rejection at: ${promise}. Reason: ${reason}`);
 });
 
 async function startServer() {
