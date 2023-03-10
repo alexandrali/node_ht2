@@ -8,15 +8,16 @@ export default function checkToken(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.headers['authenticate'];
+  const token = req.headers['authorization'];
   if (!token) {
-    return res.status(401).send(AUTH_MESSAGES.NO_TOKEN);
+    res.status(401).send(AUTH_MESSAGES.NO_TOKEN);
   } else {
-    return jwt.verify(token.toString(), config.secret, err => {
+    const tokenArray = token.split(' ');
+    jwt.verify(tokenArray[1], config.secret, err => {
       if (err) {
-        return res.status(401).send(AUTH_MESSAGES.FAILED_TO_AUTH);
+        res.status(401).send(AUTH_MESSAGES.FAILED_TO_AUTH);
       } else {
-        return next();
+        next();
       }
     });
   }
