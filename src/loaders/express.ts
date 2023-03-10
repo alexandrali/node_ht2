@@ -4,6 +4,7 @@ import usersRouter from '../routers/users-routes';
 import groupsRouter from '../routers/groups-routes';
 import authRouter from '../routers/auth-routes';
 import logger from '../config/logger';
+import cors from 'cors';
 
 function getRequestData(req: Request) {
   const {method, url, query} = req;
@@ -36,6 +37,7 @@ function trackTimeMiddleware(req: Request, res: Response, next: NextFunction) {
 
 export default ({app}: {app: express.Application}) => {
   app.use(express.json());
+  app.use(cors());
   app.use(loggerMiddleware);
   app.use(trackTimeMiddleware);
   app.use('/authenticate', authRouter);
