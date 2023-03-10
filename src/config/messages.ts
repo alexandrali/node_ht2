@@ -14,3 +14,9 @@ export const DATABASE_MESSAGES = {
   CONNECTED: 'Connection has been established successfully',
   FAILED: 'Unable to connect to the database',
 };
+
+export const AUTH_MESSAGES = {
+  INVALID_CREDENTIALS: 'Invalid username or password',
+  NO_TOKEN: 'No token provided',
+  FAILED_TO_AUTH: 'Failed to authenticate',
+};

@@ -8,8 +8,10 @@ if (envFound.error) {
 
 const port = process.env.PORT;
 const dbUrl = process.env.DB_URL || '';
+const secret = process.env.SECRET || '';
 
 export default {
   port,
   dbUrl,
+  secret,
 };
