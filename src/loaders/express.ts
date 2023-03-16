@@ -77,6 +77,9 @@ export default ({app}: {app: express.Application}) => {
       case AUTH_MESSAGES.INVALID_CREDENTIALS:
         res.status(401).send(AUTH_MESSAGES.INVALID_CREDENTIALS);
         break;
+      case AUTH_MESSAGES.NO_TOKEN:
+        res.status(401).send(AUTH_MESSAGES.NO_TOKEN);
+        break;
       case RESPONSE_MESSAGES.USER_NOT_FOUND:
         res.status(404).send(RESPONSE_MESSAGES.USER_NOT_FOUND);
         break;
