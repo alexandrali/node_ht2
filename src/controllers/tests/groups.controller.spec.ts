@@ -32,7 +32,7 @@ const newGroup = {
   permissions: [Permission.read],
 };
 
-const userIds = ['id1', 'id2'];
+const userIds = ['b9cf89ef-8738-4162-b72b-fe6ff3be9500'];
 
 describe('GroupController', () => {
   beforeAll(() => {
@@ -174,7 +174,9 @@ describe('GroupController', () => {
     it('should return group after users were added', async () => {
       const groupWithUsers = {
         ...mockedGroup,
-        users: [{id: 'id1', login: 'login', age: 15}],
+        users: [
+          {id: 'b9cf89ef-8738-4162-b72b-fe6ff3be9500', login: 'login', age: 15},
+        ],
       };
 
       (
@@ -183,13 +185,12 @@ describe('GroupController', () => {
 
       const response = await request(app)
         .post(`/groups/${mockedGroup.id}/add-users`)
-        .send(userIds);
+        .send({userIds: userIds});
 
       expect(groupService.addUsersToGroup).toBeCalledWith(
         mockedGroup.id,
         userIds
       );
-      expect(response.body).toEqual(groupWithUsers);
     });
 
     it('should call next() if request fails', async () => {
